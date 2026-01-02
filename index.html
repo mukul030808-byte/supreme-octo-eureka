@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Happy New Year, Chikku!</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS for Styling and Transitions */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4c2c2; /* Baby Pink background */
+            overflow: hidden; 
+            font-family: 'Playfair Display', serif; /* Base font */
+        }
+
+        /* --- Main Heart Positioning --- */
+        #heart-container {
+            position: absolute; 
+            top: 55%; 
+            left: 50%;
+            transform: translate(-50%, -50%); 
+            cursor: pointer;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 15;
+        }
+
+        #heart {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-color: #ff1493;
+            transform: scale(0) rotate(-45deg); 
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.7); 
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                        opacity 0.5s ease-out;
+            opacity: 1;
+            background-image: radial-gradient(circle at 60% 60%, #ff69b4, #ff1493);
+            z-index: 5; 
+        }
+        #heart::before, #heart::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: inherit;
+            border-radius: 50%;
+        }
+        #heart::before { top: -50px; left: 0; }
+        #heart::after { top: 0; left: 50px; }
+        #heart-click-area {
+            position: absolute;
+            width: 250px; 
+            height: 250px;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        /* --- Message Container --- */
+        #message-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 20;
+            width: 80%; 
+            max-width: 650px;
+        }
+        
+        /* --- Individual Text Lines and Paragraphs --- */
+        .text-line {
+            /* KEY CHANGE: Darker Pink Text Color */
+            color: #e91e63; 
+            font-weight: 500; 
+            opacity: 0.1; 
+            line-height: 1.25; 
+            margin: 10px 0; 
+            padding: 0;
+            transform: translate(0, 0) scale(0.6); 
+            filter: blur(10px);
+            transition: opacity 3s ease-out, 
+                        transform 3s cubic-bezier(0.1, 0.7, 0.4, 1.0),
+                        filter 3s ease-out,
+                        text-shadow 3s ease-in-out;
+        }
+        
+        /* Line 1: Main Title (Pinyon Script) */
+        #line-main {
+            font-family: 'Pinyon Script', cursive; 
+            font-size: 0em; 
+            font-weight: 900;
+            margin-bottom: 30px; 
+        }
+        
+        /* Body Paragraphs (Playfair Display) */
+        .body-text {
+            font-family: 'Playfair Display', serif; 
+            font-size: 0em; 
+            font-weight: 400; 
+            padding: 0 20px;
+        }
+        
+        /* Final Closing Line (Montserrat Light) */
+        #line-closing {
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 0em; 
+            font-weight: 300; 
+            margin-top: 30px;
+        }
+
+        /* --- Final Visible State --- */
+        .message-visible #line-main {
+            font-size: 5em !important; 
+            opacity: 1 !important; 
+            filter: blur(0px) !important; 
+            transform: translate(0, -40px) scale(1) !important; 
+            text-shadow: 0 0 15px #ffc0cb, 
+                         5px 5px 3px rgba(255, 102, 102, 0.7) !important; /* Baby Red Shadow */
+        }
+
+        .message-visible .body-text {
+            font-size: 1.4em !important; 
+            opacity: 1 !important; 
+            filter: blur(0px) !important; 
+            transform: translate(0, 0) scale(1) !important; 
+            text-shadow: 0 0 5px #ffc0cb;
+        }
+
+        .message-visible #line-closing {
+             font-size: 1.8em !important; 
+             opacity: 1 !important; 
+             filter: blur(0px) !important; 
+             transform: translate(0, 0) scale(1) !important; 
+             text-shadow: 0 0 5px #ffc0cb;
+        }
+
+
+        /* --- Heart Shower Styling (Unchanged) --- */
+        .falling-heart {
+            position: absolute;
+            pointer-events: none; 
+            animation: fall infinite; 
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.2); 
+            opacity: 0; 
+            transition: opacity 1s ease-in;
+            z-index: 1; 
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } 
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div id="heart-container">
+        <div id="heart-click-area"></div>
+        <div id="heart"></div>
+    </div>
+
+    <div id="message-container">
+        <p id="line-main" class="text-line">Happy New Year Chikku!</p>
+
+        <p class="text-line body-text" style="transition-delay: 0.5s;">
+            I just want to thank you from my heart for always being there for me. You stood by me in every difficult time, and that means more to me than words can ever say.
+        </p>
+
+        <p class="text-line body-text" style="transition-delay: 1.5s;">
+            You are not only my sister but also my biggest support. You are really beautiful mottu inside and out or or or your smile makes everything better.
+        </p>
+
+        <p class="text-line body-text" style="transition-delay: 2.5s;">
+            Always keep smiling, laughing, and being the amazing person you are. I’m truly lucky to have you as my sister.
+        </p>
+        
+        <p id="line-closing" class="text-line" style="transition-delay: 3.5s;">
+            Love you always 🤍
+        </p>
+    </div>
+
+    <script>
+        const heart = document.getElementById('heart');
+        const clickArea = document.getElementById('heart-click-area');
+        const messageContainer = document.getElementById('message-container');
+        const body = document.body;
+        const explosionCount = 11;
+        let clickCount = 0;
+        let heartInterval; 
+
+        const heartColors = ['#ff0000', '#ff69b4', '#ffc0cb']; // Red, Pink, Baby Pink
+        const leafHeart = '❤'; 
+        const initialScale = 1.5;
+
+        // --- 1. Initial Setup and Shower Start ---
+        setTimeout(() => {
+            heart.style.transform = `scale(${initialScale}) rotate(-45deg)`; 
+            startHeartShower(100); 
+        }, 50);
+
+        // --- 2. Infinite Heart Shower Logic ---
+        function createHeart() {
+            const heartEl = document.createElement('div');
+            heartEl.classList.add('falling-heart');
+            
+            const size = Math.random() * 20 + 20; 
+            heartEl.style.fontSize = `${size}px`;
+            
+            heartEl.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+            heartEl.textContent = leafHeart;
+
+            heartEl.style.left = `${Math.random() * 100}vw`; 
+            
+            const duration = Math.random() * 8 + 6; 
+            const delay = Math.random() * 8; 
+
+            heartEl.style.animationDuration = `${duration}s`;
+            heartEl.style.animationDelay = `-${delay}s`; 
+
+            body.appendChild(heartEl);
+
+            heartEl.addEventListener('animationiteration', () => {
+                heartEl.remove();
+            });
+
+            setTimeout(() => {
+                if (heartEl.parentNode) heartEl.remove();
+            }, (duration + 1) * 1000); 
+        }
+
+        function startHeartShower(intervalMs) {
+            if (heartInterval) {
+                clearInterval(heartInterval);
+            }
+            heartInterval = setInterval(createHeart, intervalMs); 
+        }
+
+        // --- 3. Click Handler for Expanding and Final Transition ---
+        clickArea.addEventListener('click', () => {
+            if (clickCount < explosionCount) {
+                clickCount++;
+                
+                const maxGrowth = 2.0;
+                const newScale = initialScale + (clickCount * maxGrowth) / explosionCount;
+                
+                heart.style.transform = `scale(${newScale}) rotate(-45deg)`;
+                
+            } else if (clickCount === explosionCount) {
+                // Final stage reached
+                heart.style.opacity = '0'; 
+                clickArea.style.pointerEvents = 'none'; 
+
+                // Message Reveal
+                setTimeout(() => {
+                    showMessage();
+                }, 1000); 
+                
+                clickCount++; 
+            }
+        });
+
+        // --- 4. Message Reveal and HEART EXPLOSION Function ---
+        function showMessage() {
+            messageContainer.classList.add('message-visible');
+            
+            // Trigger the dense heart shower explosion simultaneously
+            startHeartShower(50); 
+        }
+
+    </script>
+
+</body>
+</html>
